@@ -6,6 +6,13 @@ import eventsRouter from "./routes/events";
 
 dotenv.config();
 
+const REQUIRED_ENV = ["STELLAR_RPC_URL", "NOVA_EVENTS_CONTRACT_ID"];
+const missing = REQUIRED_ENV.filter((k) => !process.env[k]);
+if (missing.length > 0) {
+  console.error(`Missing required env vars: ${missing.join(", ")}`);
+  process.exit(1);
+}
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
