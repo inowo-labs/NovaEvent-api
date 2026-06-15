@@ -33,8 +33,21 @@ router.get(
 router.get(
   "/:id/tiers",
   validateEventId,
-  async (req: Request, res: Response) => {
-    res.status(501).json({ message: "not implemented", id: req.params.id });
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const tiers = await simulateContractCall(
+        "get_tiers",
+        xdr.ScVal.scvU32(id)
+      );
+      res.json(serializeBigInt(tiers));
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("tiers not found")) {
+        res.status(404).json({ error: "event not found" });
+      } else {
+        next(err);
+      }
+    }
   }
 );
 
