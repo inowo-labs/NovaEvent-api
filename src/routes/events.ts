@@ -84,12 +84,27 @@ router.get(
 router.get(
   "/:id/tickets/:ticketId",
   validateEventId,
-  async (req: Request, res: Response) => {
-    res.status(501).json({
-      message: "not implemented",
-      id: req.params.id,
-      ticketId: req.params.ticketId,
-    });
+  async (req: Request, res: Response, next: NextFunction) => {
+    const ticketId = Number(req.params.ticketId);
+    if (!Number.isInteger(ticketId) || ticketId < 0) {
+      res.status(400).json({ error: "ticket id must be a non-negative integer" });
+      return;
+    }
+    try {
+      const id = Number(req.params.id);
+      const ticket = await simulateContractCall(
+        "get_ticket",
+        xdr.ScVal.scvU32(id),
+        xdr.ScVal.scvU32(ticketId)
+      );
+      res.json(serializeBigInt(ticket));
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("ticket not found")) {
+        res.status(404).json({ error: "ticket not found" });
+      } else {
+        next(err);
+      }
+    }
   }
 );
 
