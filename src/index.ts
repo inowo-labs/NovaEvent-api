@@ -4,6 +4,7 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import eventsRouter from "./routes/events";
 import { errorHandler } from "./middleware/errorHandler";
+import { requestLogger } from "./middleware/requestLogger";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 3001;
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
 const startedAt = Date.now();
 
