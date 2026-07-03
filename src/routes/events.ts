@@ -82,6 +82,23 @@ router.get(
 );
 
 router.get(
+  "/:id/ticket-count",
+  validateEventId,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const count = await simulateContractCall(
+        "ticket_count",
+        xdr.ScVal.scvU32(id)
+      );
+      res.json({ event_id: id, ticket_count: Number(count) });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.get(
   "/:id/tickets/:ticketId",
   validateEventId,
   async (req: Request, res: Response, next: NextFunction) => {
