@@ -1,11 +1,21 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { xdr } from "@stellar/stellar-sdk";
+import rateLimit from "express-rate-limit";
 import { simulateContractCall } from "../lib/stellar";
 import { validateEventId } from "../middleware/validateEventId";
 
 const router = Router();
 
-router.get("/", async (_req: Request, res: Response, next: NextFunction) => {
+// Stricter limiter for GET /api/events — fans out N RPC simulations
+const eventsListLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again later." },
+});
+
+router.get("/", eventsListLimiter, async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const count = (await simulateContractCall("event_count")) as number;
     const events = await Promise.all(

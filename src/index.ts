@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import rateLimit from "express-rate-limit";
 import eventsRouter from "./routes/events";
 import { errorHandler } from "./middleware/errorHandler";
 import { requestLogger } from "./middleware/requestLogger";
@@ -18,6 +19,14 @@ if (missing.length > 0) {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, please try again later." },
+});
+
 app.use(helmet());
 app.use(
   cors({
@@ -25,6 +34,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(limiter);
 app.use(requestLogger);
 
 const startedAt = Date.now();
