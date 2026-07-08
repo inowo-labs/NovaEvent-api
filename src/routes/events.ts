@@ -15,6 +15,15 @@ const eventsListLimiter = rateLimit({
   message: { error: "Too many requests, please try again later." },
 });
 
+router.get("/count", async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const count = await simulateContractCall("event_count");
+    res.json({ count: Number(count) });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/", eventsListLimiter, async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const count = (await simulateContractCall("event_count")) as number;
