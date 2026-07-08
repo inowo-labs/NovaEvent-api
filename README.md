@@ -4,15 +4,38 @@ Off-chain API for NovaEvents — handles indexing, notifications, and media for 
 
 The smart contract is the source of truth for all on-chain state. This API layers on top of it to provide faster queries, event-driven notifications, and services that can't run on-chain.
 
-## Setup
+## Getting started
+
+### Prerequisites
+
+- Node.js 20+
+- npm
+
+### Install dependencies
 
 ```bash
 npm install
-cp .env.example .env   # fill in your values
-npm run dev
 ```
 
-Server starts on `http://localhost:3001`.
+### Set up environment
+
+```bash
+cp .env.example .env
+# Fill in your values
+```
+
+### Run in development mode
+
+```bash
+npm run dev
+# API runs at http://localhost:3001
+```
+
+### Build
+
+```bash
+npm run build
+```
 
 ## Stack
 
