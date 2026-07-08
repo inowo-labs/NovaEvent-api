@@ -43,16 +43,20 @@ npm run build
 - **Framework:** Express
 - **Language:** TypeScript
 
-## Endpoints
+## API Reference
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/health` | Health check |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Server health, uptime, contract info |
 | `GET` | `/api/events` | List all events |
-| `GET` | `/api/events/:id` | Get event by ID |
-| `GET` | `/api/events/:id/tiers` | Get ticket tiers for an event |
-| `GET` | `/api/events/:id/sponsorships` | Get all sponsorships for an event |
-| `GET` | `/api/events/:id/tickets/:ticketId` | Get ticket by ID |
+| `GET` | `/api/events/count` | Total event count |
+| `GET` | `/api/events/:id` | Single event by ID |
+| `GET` | `/api/events/:id/status` | Event status only |
+| `GET` | `/api/events/:id/organizer` | Event organizer address |
+| `GET` | `/api/events/:id/tiers` | Ticket tiers for an event |
+| `GET` | `/api/events/:id/sponsorships` | Sponsorship list |
+| `GET` | `/api/events/:id/ticket-count` | Total tickets sold |
+| `GET` | `/api/events/:id/tickets/:ticketId` | Single ticket |
 
 All write operations (buy ticket, sponsor, create event) happen directly on-chain through the contract — not through this API.
 
