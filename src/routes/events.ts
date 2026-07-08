@@ -53,6 +53,24 @@ router.get(
   }
 );
 
+router.get(
+  "/:id/status",
+  validateEventId,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const event = await simulateContractCall("get_event", xdr.ScVal.scvU32(id)) as any;
+      res.json({ event_id: id, status: Object.keys(event.status)[0] });
+    } catch (err: any) {
+      if (err.message?.includes("event not found")) {
+        res.status(404).json({ error: "event not found" });
+      } else {
+        next(err);
+      }
+    }
+  }
+);
+
 // New: return only the organizer address for an event
 router.get(
   "/:id/organizer",
