@@ -19,6 +19,15 @@ const DUMMY_SOURCE = new Account(
   "0"
 );
 
+const TIMEOUT_MS = 10_000; // 10 seconds
+
+async function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error("RPC request timed out")), ms)
+  );
+  return Promise.race([promise, timeout]);
+}
+
 export async function simulateContractCall(
   funcName: string,
   ...args: xdr.ScVal[]
@@ -31,7 +40,7 @@ export async function simulateContractCall(
     .setTimeout(30)
     .build();
 
-  const sim = await rpcServer.simulateTransaction(tx);
+  const sim = await withTimeout(rpcServer.simulateTransaction(tx), TIMEOUT_MS);
 
   if (!SorobanRpc.Api.isSimulationSuccess(sim)) {
     throw new Error(
