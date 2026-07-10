@@ -8,7 +8,7 @@ const router = Router();
 
 // Stricter limiter for GET /api/events — fans out N RPC simulations
 const eventsListLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
+  windowMs: 60 * 1000,
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
@@ -47,10 +47,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const event = await simulateContractCall(
-        "get_event",
-        xdr.ScVal.scvU32(id)
-      );
+      const event = await simulateContractCall("get_event", xdr.ScVal.scvU32(id));
       res.json(serializeBigInt(event));
     } catch (err: unknown) {
       if (err instanceof Error && err.message.includes("event not found")) {
@@ -80,18 +77,13 @@ router.get(
   }
 );
 
-// New: return only the organizer address for an event
 router.get(
   "/:id/organizer",
   validateEventId,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const event = await simulateContractCall(
-        "get_event",
-        xdr.ScVal.scvU32(id)
-      );
-      // reuse serializer to handle bigint conversion if present
+      const event = await simulateContractCall("get_event", xdr.ScVal.scvU32(id));
       const serialized = serializeBigInt(event) as any;
       res.json({ event_id: id, organizer: String(serialized.organizer) });
     } catch (err: unknown) {
@@ -110,10 +102,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const tiers = await simulateContractCall(
-        "get_tiers",
-        xdr.ScVal.scvU32(id)
-      );
+      const tiers = await simulateContractCall("get_tiers", xdr.ScVal.scvU32(id));
       res.json(serializeBigInt(tiers));
     } catch (err: unknown) {
       if (err instanceof Error && err.message.includes("tiers not found")) {
@@ -131,10 +120,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const sponsorships = await simulateContractCall(
-        "get_sponsorships",
-        xdr.ScVal.scvU32(id)
-      );
+      const sponsorships = await simulateContractCall("get_sponsorships", xdr.ScVal.scvU32(id));
       res.json(serializeBigInt(sponsorships));
     } catch (err) {
       next(err);
@@ -148,10 +134,7 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const count = await simulateContractCall(
-        "ticket_count",
-        xdr.ScVal.scvU32(id)
-      );
+      const count = await simulateContractCall("ticket_count", xdr.ScVal.scvU32(id));
       res.json({ event_id: id, ticket_count: Number(count) });
     } catch (err) {
       next(err);
