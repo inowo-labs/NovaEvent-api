@@ -97,6 +97,29 @@ router.get(
 );
 
 router.get(
+  "/:id/balance",
+  validateEventId,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const event = await simulateContractCall("get_event", xdr.ScVal.scvU32(id)) as any;
+      const serialized = serializeBigInt(event) as any;
+      res.json({
+        event_id: id,
+        balance: serialized.balance,
+        funding_goal: serialized.funding_goal,
+      });
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("event not found")) {
+        res.status(404).json({ error: "event not found" });
+      } else {
+        next(err);
+      }
+    }
+  }
+);
+
+router.get(
   "/:id/tiers",
   validateEventId,
   async (req: Request, res: Response, next: NextFunction) => {
