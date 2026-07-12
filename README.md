@@ -48,13 +48,16 @@ npm run build
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/health` | Server health, uptime, contract info |
-| `GET` | `/api/events` | List all events |
-| `GET` | `/api/events/count` | Total event count |
+| `GET` | `/api/events` | List all events (supports `?status=`, `?limit=`, `?offset=`) |
+| `GET` | `/api/events/count` | Total number of events |
 | `GET` | `/api/events/:id` | Single event by ID |
 | `GET` | `/api/events/:id/status` | Event status only |
-| `GET` | `/api/events/:id/organizer` | Event organizer address |
-| `GET` | `/api/events/:id/tiers` | Ticket tiers for an event |
-| `GET` | `/api/events/:id/sponsorships` | Sponsorship list |
+| `GET` | `/api/events/:id/organizer` | Organizer address |
+| `GET` | `/api/events/:id/balance` | Current balance vs funding goal |
+| `GET` | `/api/events/:id/tiers` | All ticket tiers |
+| `GET` | `/api/events/:id/tiers/:index` | Single tier by index |
+| `GET` | `/api/events/:id/tiers/:index/availability` | Remaining tickets for a tier |
+| `GET` | `/api/events/:id/sponsorships` | All sponsorships |
 | `GET` | `/api/events/:id/ticket-count` | Total tickets sold |
 | `GET` | `/api/events/:id/tickets/:ticketId` | Single ticket |
 
