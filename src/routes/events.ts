@@ -24,7 +24,7 @@ router.get("/count", async (_req: Request, res: Response, next: NextFunction) =>
   }
 });
 
-router.get("/", eventsListLimiter, async (_req: Request, res: Response, next: NextFunction) => {
+router.get("/", eventsListLimiter, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const count = (await simulateContractCall("event_count")) as number;
     const events = await Promise.all(
@@ -35,6 +35,14 @@ router.get("/", eventsListLimiter, async (_req: Request, res: Response, next: Ne
         }))
       )
     );
+
+    const { sort } = req.query;
+    if (sort === "date") {
+      events.sort((a: any, b: any) => Number(a.date_unix) - Number(b.date_unix));
+    } else if (sort === "goal") {
+      events.sort((a: any, b: any) => Number(b.funding_goal) - Number(a.funding_goal));
+    }
+
     res.json(serializeBigInt(events));
   } catch (err) {
     next(err);
