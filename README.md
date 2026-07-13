@@ -55,8 +55,6 @@ npm run build
 | `GET` | `/api/events/:id/organizer` | Organizer address |
 | `GET` | `/api/events/:id/balance` | Current balance vs funding goal |
 | `GET` | `/api/events/:id/tiers` | All ticket tiers |
-| `GET` | `/api/events/:id/tiers/:index` | Single tier by index |
-| `GET` | `/api/events/:id/tiers/:index/availability` | Remaining tickets for a tier |
 | `GET` | `/api/events/:id/sponsorships` | All sponsorships |
 | `GET` | `/api/events/:id/ticket-count` | Total tickets sold |
 | `GET` | `/api/events/:id/tickets/:ticketId` | Single ticket |
