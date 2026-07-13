@@ -48,7 +48,7 @@ npm run build
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/health` | Server health, uptime, contract info |
-| `GET` | `/api/events` | List all events (supports `?status=`, `?limit=`, `?offset=`) |
+| `GET` | `/api/events` | List all events (supports `?sort=date` or `?sort=goal`) |
 | `GET` | `/api/events/count` | Total number of events |
 | `GET` | `/api/events/:id` | Single event by ID |
 | `GET` | `/api/events/:id/status` | Event status only |
