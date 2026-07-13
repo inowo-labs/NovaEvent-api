@@ -9,7 +9,6 @@ export function requestLogger(
 
   res.on("finish", () => {
     const ms = Date.now() - start;
-    // Update header with the final elapsed time once the response is complete
     res.setHeader("X-Response-Time", `${ms}ms`);
     console.log(`${req.method} ${req.path} ${res.statusCode} — ${ms}ms`);
   });
