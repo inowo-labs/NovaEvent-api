@@ -68,9 +68,9 @@ All write operations (buy ticket, sponsor, create event) happen directly on-chai
 - Email / push notifications for ticket purchases and event updates
 - Image upload endpoint for event media (S3 or similar)
 
-See the [Issues](https://github.com/OlaGreat/NovaEvents-api/issues) tab for scoped tasks.
+See the [Issues](https://github.com/inowo-labs/NovaEvent-api/issues) tab for scoped tasks.
 
 ## Related repos
 
-- [NovaEvents contract](https://github.com/OlaGreat/NovaEvents) — Soroban smart contract (Rust)
-- [NovaEvents App](https://github.com/OlaGreat/NovaEvents-app) — frontend (Next.js)
+- [NovaEvents contract](https://github.com/inowo-labs/NovaEvents-Contract) — Soroban smart contract (Rust)
+- [NovaEvents App](https://github.com/inowo-labs/NovaEvents-app) — frontend (Next.js)
